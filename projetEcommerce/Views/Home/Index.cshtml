@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    /* Arrière-plan avec un dégradé gris */
+    .home-page-container {
+        background: linear-gradient(to right, #212121, #757575); /* Dégradé gris foncé vers gris clair */
+        height: 100vh; /* Pleine hauteur */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Section de bienvenue */
+    .welcome-section {
+        background: rgba(0, 0, 0, 0.7); /* Fond noir semi-transparent */
+        padding: 40px;
+        border-radius: 10px; /* Coins légèrement arrondis */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Ombre plus forte pour effet élégant */
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+    }
+
+        /* Texte */
+        .welcome-section h1 {
+            font-family: 'Arial', sans-serif;
+            font-size: 2.5rem; /* Taille moderne */
+            margin-bottom: 15px;
+            color: #f5f5f5; /* Texte clair pour contraster sur le fond sombre */
+        }
+
+            .welcome-section h1:last-of-type {
+                color: #bdbdbd; /* Gris clair pour une hiérarchie subtile */
+            }
+</style>
+
+<div class="home-page-container">
+    <div class="welcome-section">
+        <h1>Welcome to OussemaShop</h1>
+    </div>
+</div>

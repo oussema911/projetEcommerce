@@ -1,0 +1,52 @@
+﻿@model List<CartItem>
+
+<div class="container">
+    <h2 class="my-4">Votre Panier</h2>
+
+    @if (Model.Any())
+    {
+        <form method="post" asp-action="UpdateCart">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@item.Price.ToString("0.00") €</td>
+                            <td>
+                                <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control" />
+                                <input type="hidden" name="productId" value="@item.ProductId" />
+                            </td>
+                            <td>@(item.Price * item.Quantity).ToString("0.00") €</td>
+                            <td>
+                                <a asp-action="RemoveFromCart" asp-route-productId="@item.ProductId" class="btn btn-danger btn-sm">Supprimer</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Mettre à jour le panier</button>
+            </div>
+        </form>
+
+        <div class="mt-4">
+            <h3>Total : @ViewData["Total"] €</h3>
+            <a href="@Url.Action("Checkout", "Cart")" class="btn btn-success">Passer à la caisse</a>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">Votre panier est vide.</div>
+    }
+</div>

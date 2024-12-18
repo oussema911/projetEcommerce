@@ -1,0 +1,139 @@
+﻿@using X.PagedList
+@model IPagedList<projetEcommerce.Models.Product>
+
+<div class="container">
+    <h2 class="my-4">Liste des Produits</h2>
+
+    <!-- Formulaire de recherche et filtres -->
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <label for="search" class="form-label">Recherche</label>
+                <input type="text" id="search" name="search"
+                       value="@Context.Request.Query["search"]"
+                       class="form-control"
+                       placeholder="Rechercher un produit" />
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <label for="minPrice" class="form-label">Prix minimum</label>
+                <input type="number" id="minPrice" name="minPrice"
+                       value="@Context.Request.Query["minPrice"]"
+                       step="0.01" min="0"
+                       class="form-control"
+                       placeholder="Prix minimum" />
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <label for="maxPrice" class="form-label">Prix maximum</label>
+                <input type="number" id="maxPrice" name="maxPrice"
+                       value="@Context.Request.Query["maxPrice"]"
+                       step="0.01" min="0"
+                       class="form-control"
+                       placeholder="Prix maximum" />
+            </div>
+        </div>
+
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-search"></i> Filtrer
+            </button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                <i class="fa fa-refresh"></i> Réinitialiser
+            </a>
+        </div>
+    </form>
+
+    <!-- Liste des produits -->
+    @if (Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var product in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="@product.ImageUrl"
+                             class="card-img-top"
+                             alt="@product.Name"
+                             style="object-fit: cover; height: 250px;" />
+
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text text-muted">@product.Description</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h4 text-primary mb-0">@product.Price.ToString("0.00") €</span>
+                                <a asp-action="Details" asp-route-id="@product.Id"
+                                   class="btn btn-outline-primary btn-sm">
+                                    Détails
+                                </a>
+                                <!-- Bouton pour ajouter au panier -->
+                                <form action="@Url.Action("AddToCart", "Cart")" method="post">
+                                    <input type="hidden" name="id" value="@product.Id" />
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        Ajouter au panier
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                @if (Model.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="@Url.Action("Index", new {
+                               page = Model.PageNumber - 1,
+                               search = Context.Request.Query["search"],
+                               minPrice = Context.Request.Query["minPrice"],
+                               maxPrice = Context.Request.Query["maxPrice"]
+                           })">
+                            Précédent
+                        </a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                        <a class="page-link"
+                           href="@Url.Action("Index", new {
+                               page = i,
+                               search = Context.Request.Query["search"],
+                               minPrice = Context.Request.Query["minPrice"],
+                               maxPrice = Context.Request.Query["maxPrice"]
+                           })">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                @if (Model.HasNextPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="@Url.Action("Index", new {
+                               page = Model.PageNumber + 1,
+                               search = Context.Request.Query["search"],
+                               minPrice = Context.Request.Query["minPrice"],
+                               maxPrice = Context.Request.Query["maxPrice"]
+                           })">
+                            Suivant
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+    else
+    {
+        <div class="alert alert-info text-center" role="alert">
+            Aucun produit ne correspond à vos critères de recherche.
+        </div>
+    }
+</div>

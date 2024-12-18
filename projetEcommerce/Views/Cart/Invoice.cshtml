@@ -1,0 +1,36 @@
+﻿@model projetEcommerce.Models.Order
+
+@{
+    ViewData["Title"] = "Facture";
+}
+
+<h2>Facture</h2>
+
+<p><strong>Date de la commande:</strong> @Model.OrderDate.ToString("d")</p>
+<p><strong>Adresse de livraison:</strong> @Model.ShippingAddress</p>
+<p><strong>Total:</strong> @Model.OrderItems.Sum(item => item.TotalPrice).ToString("0.00") €</p>
+
+<h3>Détails des articles</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Prix Unitaire</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.Product.Name</td> <!-- Assurez-vous que Product est chargé -->
+                <td>@item.Quantity</td>
+                <td>@item.TotalPrice.ToString("0.00") €</td>
+                <td>@(item.TotalPrice).ToString("0.00") €</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><strong>Total de la commande:</strong> @Model.OrderItems.Sum(item => item.TotalPrice).ToString("0.00") €</p>

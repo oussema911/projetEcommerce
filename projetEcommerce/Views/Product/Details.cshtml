@@ -1,0 +1,16 @@
+﻿@model projetEcommerce.Models.Product
+
+@{
+    ViewData["Title"] = "Détails du Produit";
+}
+
+<h2>@Model.Name</h2>
+<p>@Model.Description</p>
+<p>Prix : @Model.Price €</p>
+<p>Stock disponible : @Model.Stock</p>
+
+<!-- Affichage de l'image du produit -->
+<img src="@Model.ImageUrl" alt="@Model.Name" style="max-width: 300px;" />
+
+<!-- Lien pour revenir à la liste des produits -->
+<a href="@Url.Action("Index", "Product")" class="btn btn-secondary">Retour à la liste</a>

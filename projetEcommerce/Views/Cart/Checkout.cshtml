@@ -1,0 +1,45 @@
+﻿@model List<CartItem>
+
+<div class="container">
+    <h2 class="my-4">Passer à la Caisse</h2>
+
+    @if (Model.Any())
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Price.ToString("0.00") €</td>
+                        <td>@item.Quantity</td>
+                        <td>@(item.Price * item.Quantity).ToString("0.00") €</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="mt-4">
+            <h3>Total : @ViewData["Total"] €</h3>
+        </div>
+
+        <form action="@Url.Action("OrderConfirmation", "Cart")" method="POST">
+            <!-- You can add any other fields here if necessary -->
+            <button type="submit" class="btn btn-success mt-3">Confirmer la commande</button>
+        </form>
+
+       // <a href="OrderConfirmation" type="text/plain">Confirmer</a>
+    }
+    else
+    {
+        <div class="alert alert-info">Votre panier est vide. Vous ne pouvez pas passer à la caisse.</div>
+    }
+</div>

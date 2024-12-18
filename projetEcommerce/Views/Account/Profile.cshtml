@@ -1,0 +1,52 @@
+﻿@model projetEcommerce.Models.UserProfileViewModel
+
+<h2>Profil de @Model.Username</h2>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Informations personnelles</h3>
+            <p><strong>Nom d'utilisateur:</strong> @Model.Username</p>
+            <p><strong>Email:</strong> @Model.Email</p>
+
+            <a href="@Url.Action("EditProfile", "Account")" class="btn btn-primary">Modifier mes informations</a>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h3>Historique des commandes</h3>
+
+            @if (Model.Orders.Any())
+            {
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID de commande</th>
+                            <th>Date de commande</th>
+                            <th>Adresse de livraison</th>
+                            <th>Détails</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.Orders)
+                        {
+                            <tr>
+                                <td>@order.Id</td>
+                                <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                                <td>@order.ShippingAddress</td>
+                                <td>
+                                    <a href="@Url.Action("OrderDetails", "Order", new { orderId = order.Id })" class="btn btn-info btn-sm">Voir les détails</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Aucune commande trouvée.</p>
+            }
+        </div>
+    </div>
+</div>
